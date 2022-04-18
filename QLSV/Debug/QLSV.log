@@ -1,9 +1,7 @@
 ﻿  main.cpp
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(62): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(105): warning C4102: 'again': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(97): warning C4101: 'ch': unreferenced local variable
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(163): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(217): warning C4102: 'menu_child': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(240): warning C4102: 'again3': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(291): warning C4102: 'again4': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(95): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(138): warning C4102: 'again': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(218): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(297): warning C4102: 'menu_child': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(464): warning C4102: 'again4': unreferenced label
   QLSV.vcxproj -> C:\Users\nguye\source\repos\QLSV\Debug\QLSV.exe

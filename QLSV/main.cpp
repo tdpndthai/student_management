@@ -25,10 +25,10 @@ struct Student {
 
 const char* menu[] = {
 	" THEM MOI HO SO\n",
-	" IN DANH SACH SINH VIEN\n",
-	" SAP XEP SINH VIEN\n",
-	" TIM KIEM SINH VIEN\n",
-	" THONG KE THEO LOP\n",
+	" IN DANH SACH\n",
+	" SAP XEP\n",
+	" TIM KIEM\n",
+	" THONG KE\n",
 	" THOAT"
 };
 
@@ -43,9 +43,17 @@ const char* menu_add_student[] = {
 const char* menu_sort[] = {
 	" SAP XEP CHON\n",
 	" SAP XEP CHEN\n",
-	" SAP XEP NOI BOI\n",
+	" SAP XEP NOI BOT\n",
 	" SAP XEP NHANH\n",
-	" EXIT"
+	" THOAT"
+};
+
+const char* menu_sort_option[] = {
+	" MA SINH VIEN\n",
+	" HO VA TEN\n",
+	" NGAY SINH\n",
+	" DIEM TB TICH LUY\n",
+	" THOAT"
 };
 
 const char *menu_search[] = {
@@ -53,6 +61,31 @@ const char *menu_search[] = {
 	" TIM KIEM NHI PHAN\n",
 	" EXIT"
 };
+
+const char *menu_search_option[] = {
+	" MA LOP\n",
+	" MA SINH VIEN\n",
+	" HO VA TEN\n",
+	" NGAY SINH\n",
+	" DIEM TB TICH LUY\n",
+	" THOAT"
+};
+
+void Nocursortype() //ẩn con chỏ chuột
+{
+	CONSOLE_CURSOR_INFO Info;
+	Info.bVisible = FALSE;
+	Info.dwSize = 20;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &Info);
+}
+
+void Cursortype() //hiện con chỏ chuột
+{
+	CONSOLE_CURSOR_INFO Info;
+	Info.bVisible = TRUE;
+	Info.dwSize = 20;
+	SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &Info);
+}
 
 void gotoxy(int x, int y)
 {
@@ -90,7 +123,7 @@ void kebang(int m, int n, int t) {
 	}
 }
 
-// -----------------------them sinh vien-----------------------
+// -----------------------thêm sinh viên-----------------------
 void AddStudent(Student &st) {
 	system("color F1");
 	int check, k;
@@ -103,7 +136,7 @@ void AddStudent(Student &st) {
 
 	textcolor(12); fflush(stdin); gotoxy(90, 10); gets_s(st.ClassCode);
 again:
-	gotoxy(90, 12); printf("\t\t\t"); fflush(stdin); gotoxy(90, 12); fflush(stdin); gets_s(st.StudentCode);	/*if (strlen(st.StudentCode) != 8)	goto again;*/
+	gotoxy(90, 12); printf("\t\t\t"); fflush(stdin); gotoxy(90, 12); fflush(stdin); gets_s(st.StudentCode);
 	gotoxy(90, 14); fflush(stdin);	gets_s(st.FullName);
 
 again1:
@@ -132,24 +165,46 @@ again1:
 		else if (st.year % 400 == 0 || (st.year % 4 == 0 && st.year % 100 != 0) && (st.month == 2 && (st.day >= 1 && st.day <= 29)))check = 1;
 		else check = 0;
 	}
-	if (check == 0) goto again1;
+	if (check == 0 || k != 5) goto again1;
 
 again12:
 	gotoxy(90, 18); printf("\t\t\t");
 	gotoxy(90, 18); cin >> st.AverageScore;
-	if (st.AverageScore < 0 || st.AverageScore>10) goto again12;
-	//chuanhoachuoi(st.HoTen);
-	gotoxy(90, 10); textcolor(3);
-	printf(" %s da luu\n", st.FullName);
+	if (st.AverageScore < 0 || st.AverageScore > 10) {
+		gotoxy(150, 10);
+		textcolor(3);
+		printf("Diem trung binh khong hop le %.f", st.AverageScore);
+		ch = _getch();
+		if (ch == 13 || ch == 27) {
+			fflush(stdout);
+		}
+
+		goto again12;
+	}
+	gotoxy(150, 10); textcolor(3);
+	printf(" %s da duoc luu\n", st.FullName);
 	textcolor(1);
 }
 
-//--------------ghi file nhi phan ----------------
+//--------------ghi file nhị phân ----------------
 void WriteFile(Student st) {
 	ofstream write("student.dat", ios::app | ios::binary);
 
 	write.write(reinterpret_cast<char*>(&st), sizeof(Student));
 	write.close();
+}
+
+//---------------------dọc file nhị phân-------------------------
+void ReadFile(vector<Student> &sv)
+{
+	Student sve, svv;
+	ifstream read("student.dat", ios::in | ios::binary);
+
+	while (read.read(reinterpret_cast<char *>(&sve), sizeof(Student)))
+	{
+		sv.push_back(sve);
+	}
+	read.close();
 }
 
 //------------------------in danh sach sinh vien-------------------------------------
@@ -162,7 +217,6 @@ void PrintListStudent(vector<Student> st) {
 	printf(" %5s | %10s | %15s | %20s | %12s | %7s \n", " STT", " Ma lop", "Ma sinh vien", "Ho va ten", "Ngay sinh", "Diem TB");
 	for (int i = 0; i < st.size(); i++)
 	{
-		//chuanhoachuoi(st[i].HoTen);
 		gotoxy(78, 11 + 2 * i); textcolor(29);
 		for (int j = 1; j < 86; j++) printf("%c", 205); gotoxy(77, 10 + 2 * i); printf("%c", 186); gotoxy(163, 10 + 2 * i); printf("%c", 186);
 		gotoxy(77, 11 + 2 * i); printf("%c", 204); gotoxy(163, 11 + 2 * i); printf("%c", 185);
@@ -175,6 +229,30 @@ void PrintListStudent(vector<Student> st) {
 	textcolor(1);
 }
 
+//----------------sắp xếp chọn--------------------
+void Selection_sort(vector<Student> st, int Opt) {
+	gotoxy(77, 8 + 2 * Opt);
+	printf("Selection_sort");
+}
+
+//----------------------sắp xếp chèn-------------
+void Insertion_sort(vector<Student> st, int Opt) {
+	gotoxy(77, 8 + 2 * Opt);
+	printf("Insertion_sort");
+}
+
+//----------------------sắp xếp nổi bọt-------------
+void Bubble_sort(vector<Student> st, int Opt) {
+	gotoxy(77, 8 + 2 * Opt);
+	printf("Bubble_sort");
+}
+
+//----------------------sắp xếp nhanh-------------
+void Quick_sort(vector<Student> &st, int Left, int Right, int Opt) {
+	gotoxy(77, 8 + 2 * Opt);
+	printf("Quick_sort");
+}
+
 int main() {
 	int Opt = 1; //thứ tự menu
 	char ch; //kí tự nhập từ bàn phím
@@ -182,12 +260,14 @@ int main() {
 	Student std2;
 	Student std3;
 	vector<Student> vector_student;
+	ReadFile(vector_student);
 main_menu:
 	do {
 		//kebang(0, 6, 27);
 		gotoxy(50, 3);
 		gotoxy(65, 2); printf("--MENU SINH VIEN--\n\n\n\n\n\n\n\n");
 		system("color F1");
+		Nocursortype();
 		for (int t = 1; t <= 6; t++)
 		{
 			if (t == Opt) {
@@ -216,16 +296,18 @@ main_menu:
 	} while (!(ch == 13 || ch == 77));
 menu_child:
 	switch (Opt) {
-	case 1: {
+	case 1: {// thêm hồ sơ
 		do {
+			Cursortype();
 			gotoxy(70, 10); printf("\t\t\t"); gotoxy(70, 12); printf("\t\t\t"); gotoxy(70, 14); printf("\t\t\t"); gotoxy(70, 16); printf("\t\t\t"); gotoxy(70, 18); printf("\t\t\t");
 			AddStudent(std1);
 			vector_student.push_back(std1);
-			//WriteFile(std1);
-
+			WriteFile(std1);
+			system("cls");
+			goto main_menu;
 		} while (!(ch == 13 || ch == 27));
 	}break;
-	case 2: {
+	case 2: {// in danh sách sv
 		do
 		{
 			PrintListStudent(vector_student);
@@ -233,21 +315,23 @@ menu_child:
 				ch = _getch();
 				if (ch == 224) ch = _getch();
 			} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-			if (ch == 13 || ch == 27) { system("cls"); goto main_menu; }
+			if (ch == 13 || ch == 27) { 
+				system("cls"); 
+				goto main_menu; 
+			}
 		} while (!(ch == 13 || ch == 27));
 	}break;
-	case 3:
-	again3: {
-		int kOpt = 1;
+	case 3://sắp xếp
+	sort_function: 
+	{
+		int optSort = 1;
 		do {
-			kebang(30, 5, 20);
-			gotoxy(50, 3);
 			gotoxy(65, 2);
 			printf("--MENU SINH VIEN--\n\n\n\n\n");
 			system("color F1");
 			for (int t = 1; t <= 5; t++)
 			{
-				if (t == kOpt)
+				if (t == optSort)
 				{
 					textcolor(27);
 					gotoxy(32, 8 + 2 * t);
@@ -269,15 +353,15 @@ menu_child:
 			} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
 			if (ch == 80)
 			{
-				kOpt++;
-				if (kOpt > 5)
-					kOpt = 1;
+				optSort++;
+				if (optSort > 5)
+					optSort = 1;
 			}
 			if (ch == 72)
 			{
-				kOpt--;
-				if (kOpt < 1)
-					kOpt = 5;
+				optSort--;
+				if (optSort < 1)
+					optSort = 5;
 			}
 			if (ch == 75 || ch == 27)
 			{
@@ -285,9 +369,98 @@ menu_child:
 				goto main_menu;
 			}
 		} while (!(ch == 13 || ch == 27));
-	}
-			break;
-	case 4:
+
+		switch (optSort)
+		{
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			select_sort_option:
+			{
+				char ch;
+				int optSortSelection = 1;
+				do {
+					gotoxy(65, 2);
+					printf("--MENU SINH VIEN--\n\n\n\n\n");
+					system("color F1");
+					for (int t = 1; t <= 5; t++)
+					{
+						if (t == optSortSelection)
+						{
+							gotoxy(55, 8 + 2 * t);
+							textcolor(27);
+							printf("%s", menu_sort_option[t - 1]);
+							printf("\n");
+							textcolor(1);
+						}
+						else
+						{
+							gotoxy(55, 8 + 2 * t);
+							printf("%s\n", menu_sort_option[t - 1]);
+						}
+					}
+					do
+					{
+						ch = _getch();
+						if (ch == 224)
+							ch = _getch();
+					} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
+					if (ch == 80)
+					{
+						optSortSelection++;
+						if (optSortSelection > 5)
+							optSortSelection = 1;
+					}
+					if (ch == 72)
+					{
+						optSortSelection--;
+						if (optSortSelection < 1)
+							optSortSelection = 5;
+					}
+					if (ch == 75 || ch == 27)
+					{
+						system("cls");
+						goto sort_function;
+					}
+				} while (!(ch == 13 || ch == 27));
+
+				switch (optSortSelection)
+				{
+					case 1:
+						Selection_sort(vector_student, optSortSelection);
+						_getch();
+						break;
+					case 2:
+						Insertion_sort(vector_student, optSortSelection);
+						_getch();
+						break;
+					case 3:
+						Bubble_sort(vector_student, optSortSelection);
+						_getch();
+						break;
+					case 4:
+					{
+						vector<Student> svp(vector_student);
+						Quick_sort(svp, 0, svp.size() - 1, optSortSelection);
+						_getch();
+					}
+					break;
+					case 5:
+						goto sort_function;
+						break;
+				}
+				goto select_sort_option;
+				break;
+			}
+			case 5:
+				system("cls");
+				goto main_menu;
+				break;
+		}
+	} 
+	goto sort_function;
+	case 4://tìm kiếm
 	again4: {
 		int mOpt = 1;
 		do
@@ -338,9 +511,20 @@ menu_child:
 			}
 		} while (!(ch == 13 || ch == 27));
 	}break;
-	case 5:
+	case 5://thống kê
+		do {
+
+		} while (!(ch == 13 || ch == 27));
 		break;
-	case 6:
+	case 6://thoát
+		system("cls");
+		cout << "\n\n"
+			<< endl;
+		gotoxy(45, 2);
+		cout << "HOC, HOC NUA, HOC MAI!!!!!" << endl;
+		textcolor(12);
+		cout << "\n\nAn phim bat ki de thoat...";
+		_getch();
 		break;
 	}
 	return 0;
