@@ -1,6 +1,6 @@
 ﻿#define _CRT_SECURE_NO_DEPRECATE
 #include <iostream>
-#include <string>
+#include <string>.dat
 #include <string.h>
 #include <vector>
 #include <fstream>
@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <Tchar.h>
 using namespace std;
+const char FileOutTxt[] = "list_student.txt";
+const char FileOutDat[] = "student.dat";
 
 
 struct Student {
@@ -125,7 +127,7 @@ void kebang(int m, int n, int t) {
 
 // -----------------------thêm sinh viên-----------------------
 void AddStudent(Student &st) {
-	system("color F1");
+	system("color B3");
 	int check, k;
 	char ch;
 	kebang(50, 5, 70);
@@ -183,74 +185,403 @@ again12:
 	}
 	gotoxy(150, 10); textcolor(3);
 	printf(" %s da duoc luu\n", st.FullName);
-	textcolor(1);
+	textcolor(3);
 }
 
 //--------------ghi file nhị phân ----------------
 void WriteFile(Student st) {
-	ofstream write("student.dat", ios::app | ios::binary);
+	ofstream write(FileOutDat, ios::app | ios::binary);
 
 	write.write(reinterpret_cast<char*>(&st), sizeof(Student));
 	write.close();
 }
 
 //---------------------dọc file nhị phân-------------------------
-void ReadFile(vector<Student> &sv)
+void ReadFile(vector<Student> &st)
 {
-	Student sve, svv;
-	ifstream read("student.dat", ios::in | ios::binary);
+	Student ste, stv;
+	ifstream read(FileOutDat, ios::in | ios::binary);
 
-	while (read.read(reinterpret_cast<char *>(&sve), sizeof(Student)))
+	while (read.read(reinterpret_cast<char *>(&ste), sizeof(Student)))
 	{
-		sv.push_back(sve);
+		st.push_back(ste);
 	}
 	read.close();
 }
 
 //------------------------in danh sach sinh vien-------------------------------------
 void PrintListStudent(vector<Student> st) {
-	textcolor(1);
+	textcolor(3);
 	gotoxy(90, 7); textcolor(28);
 	cout << "--------DANH  SACH CO " << st.size() << " SINH VIEN--------"; gotoxy(78, 9); textcolor(29);
 	for (int j = 1; j < 86; j++) printf("%c", 205); printf("\n"); gotoxy(77, 9); printf("%c", 201); gotoxy(163, 9); printf("%c", 187);
-	gotoxy(77, 10); textcolor(1);
+	gotoxy(77, 10); textcolor(3);
 	printf(" %5s | %10s | %15s | %20s | %12s | %7s \n", " STT", " Ma lop", "Ma sinh vien", "Ho va ten", "Ngay sinh", "Diem TB");
 	for (int i = 0; i < st.size(); i++)
 	{
 		gotoxy(78, 11 + 2 * i); textcolor(29);
 		for (int j = 1; j < 86; j++) printf("%c", 205); gotoxy(77, 10 + 2 * i); printf("%c", 186); gotoxy(163, 10 + 2 * i); printf("%c", 186);
 		gotoxy(77, 11 + 2 * i); printf("%c", 204); gotoxy(163, 11 + 2 * i); printf("%c", 185);
-		gotoxy(78, 12 + 2 * i); textcolor(1);
+		gotoxy(78, 12 + 2 * i); textcolor(3);
 		printf("%5.03d |%10s  |%15s  | %20s | %12s |%7.2f  \n", (i + 1), _strupr(st[i].ClassCode), st[i].StudentCode, st[i].FullName, st[i].DateOfBirth, st[i].AverageScore);
 	}
 	gotoxy(78, 11 + 2 * st.size()); textcolor(29);
 	for (int j = 1; j < 87; j++) printf("%c", 205); printf("\n"); gotoxy(77, 11 + 2 * st.size()); printf("%c", 200); gotoxy(163, 11 + 2 * st.size()); printf("%c", 188);
 	gotoxy(77, 10 + 2 * st.size()); printf("%c", 186); gotoxy(163, 10 + 2 * st.size()); printf("%c", 186);
-	textcolor(1);
+	textcolor(3);
+}
+
+// bo dau cach trong
+char *XuliTen(char name[50])
+{
+	char ten[50], temp[10], ten1[50];
+	strcpy(ten, name);
+	int i = 0;
+	int n = strlen(ten) - 1;
+	while (ten[n] != ' ')
+	{
+		temp[i] = ten[n];
+		i++;
+		n--;
+	}
+	temp[i] = '\0';
+	ten[n] = '\0';
+	strcpy(ten1, _strrev(temp));
+	strcat(ten1, " ");
+	strcat(ten1, ten);
+	return ten1;
+}
+
+// bo dau / o ngay sinh
+char *XuliNgaySinh(char ngay[20])
+{
+	char temp[30], date[20], *m[20];
+	strcpy(date, ngay);
+	char *p;
+	int i = 0;
+	p = strtok(date, "/");
+	while (p != NULL)
+	{
+		m[i] = p;
+		i++;
+		p = strtok(NULL, "/");
+	}
+	strcpy(temp, m[i - 1]);
+	for (int j = i - 2; j >= 0; j--)
+	{
+		strcat(temp, "/");
+		strcat(temp, m[j]);
+	}
+	return temp;
+}
+
+
+void strdelete(char *s, int vt, int sl) // xoa ki tu o vi tri vt, s1 la vt xet cuoi
+{
+	int n = strlen(s), i;
+	for (i = vt; i <= n - sl; ++i)
+		s[i] = s[i + sl];
+}
+
+//-------------------------------------------------------------------------------------------------------
+void chuanhoachuoi(char a[])
+{
+	int i;
+	while (a[strlen(a) - 1] == ' ') // xoa khoang trang o cuoi
+		a[strlen(a) - 1] = 0;
+	while (a[0] == ' ') // xoa khoang trang o dau
+		strdelete(a, 0, 1);
+	for (i = 0; i < strlen(a); ++i)
+		if ((a[i] >= 65) && (a[i] <= 90)) // kiem tra co phai la ky tu hoa
+			a[i] += 32;					  // chuyen tat ca ve ky tu thuong
+	i = 0;
+	while (i < strlen(a)) // xoa hai khoang trang lien tiep
+		if ((a[i] == ' ') && (a[i + 1] == ' '))
+			strdelete(a, i, 1);
+		else
+			++i;
+	for (i = 0; i < strlen(a); i++)
+		if (a[i] == ' ')
+			a[i + 1] -= 32; // chuyen chu cai sau khoang trang thanh chu hoa
+	a[0] = toupper(a[0]);	// chuyen chu cai dau tien thanh chu hoa
+}
+
+//-------------ghi ra file text ---------
+void WriteFileText (vector<Student> st)
+{
+	FILE *f1;
+	int i = 1;
+
+	f1 = fopen(FileOutTxt, "wt");
+	fprintf(f1, "          -----------DANH SACH SINH VIEN-------------\n");
+	fprintf(f1, "---------------------------------------------------------------------------------------------\n");
+
+	fprintf(f1, "| stt  |     MALOP  |        MAst  |           HOTEN         |     NGAYSINH    |   DIEMTB   |\n");
+	for (int i = 0; i < st.size(); i++)
+	{
+		chuanhoachuoi(st[i].FullName);
+		fprintf(f1, "---------------------------------------------------------------------------------------------\n");
+		fprintf(f1, "|%5.03d | %10s | %12s | %23s | %15s | %10.2f |\n", (i + 1), _strupr(st[i].ClassCode), st[i].StudentCode, st[i].FullName, st[i].DateOfBirth, st[i].AverageScore);
+	}
+	fprintf(f1, "---------------------------------------------------------------------------------------------\n");
+	fclose(f1);
 }
 
 //----------------sắp xếp chọn--------------------
-void Selection_sort(vector<Student> st, int Opt) {
-	gotoxy(77, 8 + 2 * Opt);
-	printf("Selection_sort");
+void SelectionSort(vector<Student> st, int Opt) {
+	int min;
+	char temp1[30], temp2[30];
+	for (int i = 0; i < st.size() - 1; i++)
+	{
+		min = i;
+		for (int j = i + 1; j < st.size(); j++)
+		{
+			switch (Opt)
+			{
+			case 1:
+			{
+				if (strcmp(st[min].StudentCode, st[j].StudentCode) > 0)
+					min = j;
+			}
+			break;
+			case 2:
+			{
+				strcpy(temp1, XuliTen(st[min].FullName));
+				strcpy(temp2, XuliTen(st[j].FullName));
+				if (strcmp(temp1, temp2) > 0)
+					min = j;
+			}
+			break;
+			case 3:
+			{
+				strcpy(temp1, XuliNgaySinh(st[min].DateOfBirth));
+				strcpy(temp2, XuliNgaySinh(st[j].DateOfBirth));
+				if (strcmp(temp1, temp2) > 0)
+					min = j;
+			}
+			break;
+			case 4:
+			{
+				if (st[min].AverageScore < st[j].AverageScore)
+					min = j;
+			}
+			break;
+			}
+		}
+		swap(st[i], st[min]);
+	}
+	PrintListStudent(st);
+	_getch();
+	WriteFileText(st);
 }
 
 //----------------------sắp xếp chèn-------------
-void Insertion_sort(vector<Student> st, int Opt) {
-	gotoxy(77, 8 + 2 * Opt);
-	printf("Insertion_sort");
+void InsertionSort(vector<Student> st, int Opt) {
+	Student temp;
+	char temp1[50], temp2[50];
+	for (int i = 1; i < st.size(); i++)
+	{
+		temp = st[i];
+		int j = i - 1;
+		switch (Opt)
+		{
+		case 1:
+		{
+			while ((j >= 0) && (strcmp(temp.StudentCode, st[j].StudentCode) < 0))
+			{
+				st[j + 1] = st[j];
+				j = j - 1;
+			}
+		}
+		break;
+		case 2:
+		{
+			strcpy(temp1, XuliTen(temp.FullName));
+			while (j >= 0)
+			{
+				strcpy(temp2, XuliTen(st[j].FullName));
+				if (strcmp(temp1, temp2) < 0)
+				{
+					st[j + 1] = st[j];
+					j = j - 1;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		break;
+		case 3:
+		{
+			strcpy(temp1, XuliNgaySinh(temp.DateOfBirth));
+			while (j >= 0)
+			{
+				strcpy(temp2, XuliNgaySinh(st[j].DateOfBirth));
+				if (strcmp(temp1, temp2) < 0)
+				{
+					st[j + 1] = st[j];
+					j = j - 1;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		break;
+		case 4:
+		{
+			while ((j >= 0) && (temp.AverageScore > st[j].AverageScore))
+			{
+				st[j + 1] = st[j];
+				j = j - 1;
+			}
+		}
+		break;
+		}
+		st[j + 1] = temp;
+	}
+	PrintListStudent(st);
+	_getch();
+	WriteFileText(st);
 }
 
 //----------------------sắp xếp nổi bọt-------------
-void Bubble_sort(vector<Student> st, int Opt) {
-	gotoxy(77, 8 + 2 * Opt);
-	printf("Bubble_sort");
+void BubbleSort(vector<Student> st, int Opt) {
+	char temp1[50], temp2[50];
+	for (int i = 0; i < st.size() - 1; i++)
+	{
+		for (int j = st.size() - 1; j > i; j--)
+		{
+			switch (Opt)
+			{
+			case 1:
+			{
+				if (strcmp(st[j].StudentCode, st[j - 1].StudentCode) < 0)
+					swap(st[j], st[j - 1]);
+			}
+			break;
+			case 2:
+			{
+				strcpy(temp1, XuliTen(st[j].FullName));
+				strcpy(temp2, XuliTen(st[j - 1].FullName));
+				if (strcmp(temp1, temp2) < 0)
+					swap(st[j], st[j - 1]);
+			}
+			break;
+			case 3:
+			{
+				strcpy(temp1, XuliNgaySinh(st[j].DateOfBirth));
+				strcpy(temp2, XuliNgaySinh(st[j - 1].DateOfBirth));
+				if (strcmp(temp1, temp2) < 0)
+					swap(st[j], st[j - 1]);
+			}
+			break;
+			case 4:
+			{
+				if (st[j].AverageScore > st[j - 1].AverageScore)
+					swap(st[j], st[j - 1]);
+			}
+			break;
+			}
+		}
+	}
+	PrintListStudent(st);
+	_getch();
+	WriteFileText(st);
 }
 
 //----------------------sắp xếp nhanh-------------
-void Quick_sort(vector<Student> &st, int Left, int Right, int Opt) {
-	gotoxy(77, 8 + 2 * Opt);
-	printf("Quick_sort");
+void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
+	int i = Left;
+	int j = Right;
+	Student key = st[(Left + Right) / 2];
+	char cKey[50], temp[50];
+
+	while (i <= j)
+	{
+		switch (Opt)
+		{
+		case 1:
+		{
+			while (strcmp(st[i].StudentCode, key.StudentCode) < 0)
+				i++;
+			while (strcmp(st[j].StudentCode, key.StudentCode) > 0)
+				j--;
+		}
+		break;
+		case 2:
+		{
+			strcpy(cKey, XuliTen(key.FullName));
+			while (1)
+			{
+				strcpy(temp, XuliTen(st[i].FullName));
+				if (strcmp(temp, cKey) < 0)
+					i++;
+				else
+					break;
+			}
+			while (1)
+			{
+				strcpy(temp, XuliTen(st[j].FullName));
+				if (strcmp(temp, cKey) > 0)
+					j--;
+				else
+					break;
+			}
+		}
+		break;
+		case 3:
+		{
+			strcpy(cKey, XuliNgaySinh(key.DateOfBirth));
+			while (1)
+			{
+				strcpy(temp, XuliNgaySinh(st[i].DateOfBirth));
+				if (strcmp(temp, cKey) < 0)
+					i++;
+				else
+					break;
+			}
+			while (1)
+			{
+				strcpy(temp, XuliNgaySinh(st[j].DateOfBirth));
+				if (strcmp(temp, cKey) > 0)
+					j--;
+				else
+					break;
+			}
+		}
+		break;
+		case 4:
+		{
+			while (st[i].AverageScore > key.AverageScore)
+				i++;
+			while (st[j].AverageScore < key.AverageScore)
+				j--;
+		}
+		break;
+		case 5:
+		{
+			while (strcmp(st[i].ClassCode, key.ClassCode) < 0)
+				i++;
+			while (strcmp(st[j].ClassCode, key.ClassCode) > 0)
+				j--;
+		}
+		break;
+		}
+		if (i <= j)
+		{
+			swap(st[i], st[j]);
+			i++;
+			j--;
+		}
+	}
+	if (Left < j)
+		QuickSort(st, Left, j, Opt);
+	if (i < Right)
+		QuickSort(st, i, Right, Opt);
+	WriteFileText(st);
 }
 
 int main() {
@@ -266,13 +597,13 @@ main_menu:
 		//kebang(0, 6, 27);
 		gotoxy(50, 3);
 		gotoxy(65, 2); printf("--MENU SINH VIEN--\n\n\n\n\n\n\n\n");
-		system("color F1");
+		system("color B3");
 		Nocursortype();
 		for (int t = 1; t <= 6; t++)
 		{
 			if (t == Opt) {
-				textcolor(27); gotoxy(2, 8 + 2 * t);
-				printf("%s", menu[t - 1]); printf("\n"); textcolor(1);
+				textcolor(26); gotoxy(2, 8 + 2 * t);
+				printf("%s", menu[t - 1]); printf("\n"); textcolor(3);
 			}
 			else
 			{
@@ -303,11 +634,11 @@ menu_child:
 			AddStudent(std1);
 			vector_student.push_back(std1);
 			WriteFile(std1);
-			system("cls");
+			//system("cls");
 			goto main_menu;
 		} while (!(ch == 13 || ch == 27));
 	}break;
-	case 2: {// in danh sách sv
+	case 2: {// in danh sách st
 		do
 		{
 			PrintListStudent(vector_student);
@@ -328,16 +659,16 @@ menu_child:
 		do {
 			gotoxy(65, 2);
 			printf("--MENU SINH VIEN--\n\n\n\n\n");
-			system("color F1");
+			system("color B3");
 			for (int t = 1; t <= 5; t++)
 			{
 				if (t == optSort)
 				{
-					textcolor(27);
+					textcolor(26);
 					gotoxy(32, 8 + 2 * t);
 					printf("%s", menu_sort[t - 1]);
 					printf("\n");
-					textcolor(1);
+					textcolor(3);
 				}
 				else
 				{
@@ -365,7 +696,7 @@ menu_child:
 			}
 			if (ch == 75 || ch == 27)
 			{
-				system("cls");
+				//system("cls");
 				goto main_menu;
 			}
 		} while (!(ch == 13 || ch == 27));
@@ -383,16 +714,16 @@ menu_child:
 				do {
 					gotoxy(65, 2);
 					printf("--MENU SINH VIEN--\n\n\n\n\n");
-					system("color F1");
+					system("color B3");
 					for (int t = 1; t <= 5; t++)
 					{
 						if (t == optSortSelection)
 						{
 							gotoxy(55, 8 + 2 * t);
-							textcolor(27);
+							textcolor(26);
 							printf("%s", menu_sort_option[t - 1]);
 							printf("\n");
-							textcolor(1);
+							textcolor(3);
 						}
 						else
 						{
@@ -420,7 +751,6 @@ menu_child:
 					}
 					if (ch == 75 || ch == 27)
 					{
-						system("cls");
 						goto sort_function;
 					}
 				} while (!(ch == 13 || ch == 27));
@@ -428,25 +758,25 @@ menu_child:
 				switch (optSortSelection)
 				{
 					case 1:
-						Selection_sort(vector_student, optSortSelection);
-						_getch();
+						SelectionSort(vector_student, optSortSelection);
 						break;
 					case 2:
-						Insertion_sort(vector_student, optSortSelection);
+						InsertionSort(vector_student, optSortSelection);
 						_getch();
 						break;
 					case 3:
-						Bubble_sort(vector_student, optSortSelection);
+						BubbleSort(vector_student, optSortSelection);
 						_getch();
 						break;
 					case 4:
 					{
-						vector<Student> svp(vector_student);
-						Quick_sort(svp, 0, svp.size() - 1, optSortSelection);
+						vector<Student> stp(vector_student);
+						QuickSort(stp, 0, stp.size() - 1, optSortSelection);
 						_getch();
 					}
 					break;
 					case 5:
+						//system("cls");
 						goto sort_function;
 						break;
 				}
@@ -469,16 +799,16 @@ menu_child:
 			gotoxy(50, 3);
 			gotoxy(65, 2);
 			printf("--MENU SINH VIEN--\n\n\n\n\n");
-			system("color F1");
+			system("color B3");
 			for (int t = 1; t <= 3; t++)
 			{
 				if (t == mOpt)
 				{
 					gotoxy(32, 8 + 2 * t);
-					textcolor(27);
+					textcolor(26);
 					printf("%s", menu_search[t - 1]);
 					printf("\n");
-					textcolor(1);
+					textcolor(3);
 				}
 				else
 				{
