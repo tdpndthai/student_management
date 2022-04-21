@@ -1,1 +1,18 @@
-﻿
+﻿  main.cpp
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(97): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(140): warning C4102: 'again': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(220): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(294): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(298): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(303): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(320): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(334): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(337): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(382): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(453): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(633): warning C4102: 'menu_child': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(796): warning C4102: 'again4': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(252): warning C4172: returning address of local variable or temporary: ten1
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(275): warning C4172: returning address of local variable or temporary: temp
+  QLSV.vcxproj -> C:\Users\nguye\source\repos\QLSV\Debug\QLSV.exe

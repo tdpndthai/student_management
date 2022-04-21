@@ -110,7 +110,7 @@ void textcolor(WORD color)
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
 
-void kebang(int m, int n, int t) {
+void DrawBoard(int m, int n, int t) {
 	for (int i = 0; i <= n; i++) {
 		gotoxy(m, 9); printf("%c", 201);
 		gotoxy(m + t - 1, 9); printf("%c", 187);
@@ -130,7 +130,7 @@ void AddStudent(Student &st) {
 	system("color B3");
 	int check, k;
 	char ch;
-	kebang(50, 5, 70);
+	DrawBoard(50, 5, 70);
 	for (int i = 0; i < 5; i++) {
 		gotoxy(52, 10 + 2 * i);
 		printf("%s", menu_add_student[i]); printf("\n");
@@ -232,7 +232,7 @@ void PrintListStudent(vector<Student> st) {
 }
 
 // bo dau cach trong
-char *XuliTen(char name[50])
+char *NameHandling(char name[50])
 {
 	char ten[50], temp[10], ten1[50];
 	strcpy(ten, name);
@@ -253,7 +253,7 @@ char *XuliTen(char name[50])
 }
 
 // bo dau / o ngay sinh
-char *XuliNgaySinh(char ngay[20])
+char *DateHandling(char ngay[20])
 {
 	char temp[30], date[20], *m[20];
 	strcpy(date, ngay);
@@ -284,7 +284,7 @@ void strdelete(char *s, int vt, int sl) // xoa ki tu o vi tri vt, s1 la vt xet c
 }
 
 //-------------------------------------------------------------------------------------------------------
-void chuanhoachuoi(char a[])
+void HandleRegularString(char a[])
 {
 	int i;
 	while (a[strlen(a) - 1] == ' ') // xoa khoang trang o cuoi
@@ -319,7 +319,7 @@ void WriteFileText (vector<Student> st)
 	fprintf(f1, "| stt  |     MALOP  |        MAst  |           HOTEN         |     NGAYSINH    |   DIEMTB   |\n");
 	for (int i = 0; i < st.size(); i++)
 	{
-		chuanhoachuoi(st[i].FullName);
+		HandleRegularString(st[i].FullName);
 		fprintf(f1, "---------------------------------------------------------------------------------------------\n");
 		fprintf(f1, "|%5.03d | %10s | %12s | %23s | %15s | %10.2f |\n", (i + 1), _strupr(st[i].ClassCode), st[i].StudentCode, st[i].FullName, st[i].DateOfBirth, st[i].AverageScore);
 	}
@@ -346,16 +346,16 @@ void SelectionSort(vector<Student> st, int Opt) {
 			break;
 			case 2:
 			{
-				strcpy(temp1, XuliTen(st[min].FullName));
-				strcpy(temp2, XuliTen(st[j].FullName));
+				strcpy(temp1, NameHandling(st[min].FullName));
+				strcpy(temp2, NameHandling(st[j].FullName));
 				if (strcmp(temp1, temp2) > 0)
 					min = j;
 			}
 			break;
 			case 3:
 			{
-				strcpy(temp1, XuliNgaySinh(st[min].DateOfBirth));
-				strcpy(temp2, XuliNgaySinh(st[j].DateOfBirth));
+				strcpy(temp1, DateHandling(st[min].DateOfBirth));
+				strcpy(temp2, DateHandling(st[j].DateOfBirth));
 				if (strcmp(temp1, temp2) > 0)
 					min = j;
 			}
@@ -396,10 +396,10 @@ void InsertionSort(vector<Student> st, int Opt) {
 		break;
 		case 2:
 		{
-			strcpy(temp1, XuliTen(temp.FullName));
+			strcpy(temp1, NameHandling(temp.FullName));
 			while (j >= 0)
 			{
-				strcpy(temp2, XuliTen(st[j].FullName));
+				strcpy(temp2, NameHandling(st[j].FullName));
 				if (strcmp(temp1, temp2) < 0)
 				{
 					st[j + 1] = st[j];
@@ -414,10 +414,10 @@ void InsertionSort(vector<Student> st, int Opt) {
 		break;
 		case 3:
 		{
-			strcpy(temp1, XuliNgaySinh(temp.DateOfBirth));
+			strcpy(temp1, DateHandling(temp.DateOfBirth));
 			while (j >= 0)
 			{
-				strcpy(temp2, XuliNgaySinh(st[j].DateOfBirth));
+				strcpy(temp2, DateHandling(st[j].DateOfBirth));
 				if (strcmp(temp1, temp2) < 0)
 				{
 					st[j + 1] = st[j];
@@ -464,16 +464,16 @@ void BubbleSort(vector<Student> st, int Opt) {
 			break;
 			case 2:
 			{
-				strcpy(temp1, XuliTen(st[j].FullName));
-				strcpy(temp2, XuliTen(st[j - 1].FullName));
+				strcpy(temp1, NameHandling(st[j].FullName));
+				strcpy(temp2, NameHandling(st[j - 1].FullName));
 				if (strcmp(temp1, temp2) < 0)
 					swap(st[j], st[j - 1]);
 			}
 			break;
 			case 3:
 			{
-				strcpy(temp1, XuliNgaySinh(st[j].DateOfBirth));
-				strcpy(temp2, XuliNgaySinh(st[j - 1].DateOfBirth));
+				strcpy(temp1, DateHandling(st[j].DateOfBirth));
+				strcpy(temp2, DateHandling(st[j - 1].DateOfBirth));
 				if (strcmp(temp1, temp2) < 0)
 					swap(st[j], st[j - 1]);
 			}
@@ -513,10 +513,10 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 		break;
 		case 2:
 		{
-			strcpy(cKey, XuliTen(key.FullName));
+			strcpy(cKey, NameHandling(key.FullName));
 			while (1)
 			{
-				strcpy(temp, XuliTen(st[i].FullName));
+				strcpy(temp, NameHandling(st[i].FullName));
 				if (strcmp(temp, cKey) < 0)
 					i++;
 				else
@@ -524,7 +524,7 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 			}
 			while (1)
 			{
-				strcpy(temp, XuliTen(st[j].FullName));
+				strcpy(temp, NameHandling(st[j].FullName));
 				if (strcmp(temp, cKey) > 0)
 					j--;
 				else
@@ -534,10 +534,10 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 		break;
 		case 3:
 		{
-			strcpy(cKey, XuliNgaySinh(key.DateOfBirth));
+			strcpy(cKey, DateHandling(key.DateOfBirth));
 			while (1)
 			{
-				strcpy(temp, XuliNgaySinh(st[i].DateOfBirth));
+				strcpy(temp, DateHandling(st[i].DateOfBirth));
 				if (strcmp(temp, cKey) < 0)
 					i++;
 				else
@@ -545,7 +545,7 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 			}
 			while (1)
 			{
-				strcpy(temp, XuliNgaySinh(st[j].DateOfBirth));
+				strcpy(temp, DateHandling(st[j].DateOfBirth));
 				if (strcmp(temp, cKey) > 0)
 					j--;
 				else
@@ -582,6 +582,7 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 	if (i < Right)
 		QuickSort(st, i, Right, Opt);
 	WriteFileText(st);
+	_getch();
 }
 
 int main() {
@@ -593,9 +594,13 @@ int main() {
 	vector<Student> vector_student;
 	ReadFile(vector_student);
 main_menu:
+	textcolor(2);
+	gotoxy(65, 25);
+	printf("NGUYEN DANH THAI");
+	gotoxy(70, 26);
+	textcolor(2);
+	printf("CNPM15");
 	do {
-		//kebang(0, 6, 27);
-		gotoxy(50, 3);
 		gotoxy(65, 2); printf("--MENU SINH VIEN--\n\n\n\n\n\n\n\n");
 		system("color B3");
 		Nocursortype();
@@ -762,17 +767,14 @@ menu_child:
 						break;
 					case 2:
 						InsertionSort(vector_student, optSortSelection);
-						_getch();
 						break;
 					case 3:
 						BubbleSort(vector_student, optSortSelection);
-						_getch();
 						break;
 					case 4:
 					{
 						vector<Student> stp(vector_student);
 						QuickSort(stp, 0, stp.size() - 1, optSortSelection);
-						_getch();
 					}
 					break;
 					case 5:
@@ -795,7 +797,7 @@ menu_child:
 		int mOpt = 1;
 		do
 		{
-			kebang(30, 3, 22);
+			DrawBoard(30, 3, 22);
 			gotoxy(50, 3);
 			gotoxy(65, 2);
 			printf("--MENU SINH VIEN--\n\n\n\n\n");
