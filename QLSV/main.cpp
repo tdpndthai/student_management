@@ -582,11 +582,13 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 	if (i < Right)
 		QuickSort(st, i, Right, Opt);
 	WriteFileText(st);
-	_getch();
 }
 
 int main() {
 	int Opt = 1; //thứ tự menu
+	int optSort = 1; //thứ tự lựa chọn option sort
+	int optSortSelection = 1; //thứ tự lựa chọn điều kiện sort: class code,student code
+	int optSearch = 1; //thứ tự lựa chọn option search
 	char ch; //kí tự nhập từ bàn phím
 	Student std1;
 	Student std2;
@@ -639,7 +641,7 @@ menu_child:
 			AddStudent(std1);
 			vector_student.push_back(std1);
 			WriteFile(std1);
-			//system("cls");
+			system("cls");
 			goto main_menu;
 		} while (!(ch == 13 || ch == 27));
 	}break;
@@ -660,7 +662,6 @@ menu_child:
 	case 3://sắp xếp
 	sort_function: 
 	{
-		int optSort = 1;
 		do {
 			gotoxy(65, 2);
 			printf("--MENU SINH VIEN--\n\n\n\n\n");
@@ -704,9 +705,9 @@ menu_child:
 				//system("cls");
 				goto main_menu;
 			}
-		} while (!(ch == 13 || ch == 27));
+		} while (!(ch == 13 || ch == 27 || ch == 77));
 
-		switch (optSort)
+		switch (optSort) //lựa chọn sắp xếp nào,chọn,chèn,nhanh,noi bot
 		{
 			case 1:
 			case 2:
@@ -715,7 +716,6 @@ menu_child:
 			select_sort_option:
 			{
 				char ch;
-				int optSortSelection = 1;
 				do {
 					gotoxy(65, 2);
 					printf("--MENU SINH VIEN--\n\n\n\n\n");
@@ -775,6 +775,8 @@ menu_child:
 					{
 						vector<Student> stp(vector_student);
 						QuickSort(stp, 0, stp.size() - 1, optSortSelection);
+						PrintListStudent(stp);
+						_getch();
 					}
 					break;
 					case 5:
@@ -794,7 +796,6 @@ menu_child:
 	goto sort_function;
 	case 4://tìm kiếm
 	again4: {
-		int mOpt = 1;
 		do
 		{
 			DrawBoard(30, 3, 22);
@@ -804,7 +805,7 @@ menu_child:
 			system("color B3");
 			for (int t = 1; t <= 3; t++)
 			{
-				if (t == mOpt)
+				if (t == optSearch)
 				{
 					gotoxy(32, 8 + 2 * t);
 					textcolor(26);
@@ -826,22 +827,22 @@ menu_child:
 			} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
 			if (ch == 80)
 			{
-				mOpt++;
-				if (mOpt > 3)
-					mOpt = 1;
+				optSearch++;
+				if (optSearch > 3)
+					optSearch = 1;
 			}
 			if (ch == 72)
 			{
-				mOpt--;
-				if (mOpt < 1)
-					mOpt = 3;
+				optSearch--;
+				if (optSearch < 1)
+					optSearch = 3;
 			}
 			if (ch == 75 || ch == 27)
 			{
 				system("cls");
 				goto main_menu;
 			}
-		} while (!(ch == 13 || ch == 27));
+		} while (!(ch == 13 || ch == 27 || ch == 77));
 	}break;
 	case 5://thống kê
 		do {

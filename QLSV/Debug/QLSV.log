@@ -11,8 +11,8 @@ c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(334): warning C4018: '<': signed/
 c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(337): warning C4018: '<': signed/unsigned mismatch
 c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(382): warning C4018: '<': signed/unsigned mismatch
 c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(453): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(633): warning C4102: 'menu_child': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(796): warning C4102: 'again4': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(252): warning C4172: returning address of local variable or temporary: ten1
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(635): warning C4102: 'menu_child': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(798): warning C4102: 'again4': unreferenced label
 c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(275): warning C4172: returning address of local variable or temporary: temp
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(252): warning C4172: returning address of local variable or temporary: ten1
   QLSV.vcxproj -> C:\Users\nguye\source\repos\QLSV\Debug\QLSV.exe
