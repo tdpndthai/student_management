@@ -584,6 +584,214 @@ void QuickSort(vector<Student> &st, int Left, int Right, int Opt) {
 	WriteFileText(st);
 }
 
+//-----------tim kiem tuan tu----------------
+void LinearSearch(vector<Student> st, int Opt)
+{
+	vector<Student> result;
+	char cKey[50];
+	float mKey;
+	DrawBoard(77, 1, 30);
+	gotoxy(80, 10);
+	textcolor(12);
+	fflush(stdin);
+	gets_s(cKey);
+	textcolor(3);
+	HandleRegularString(cKey);
+	for (int i = 0; i < st.size(); i++)
+	{
+		switch (Opt)
+		{
+		case 1:
+		{
+			_strupr(cKey);
+			if (strcmp(cKey, st[i].ClassCode) == 0)
+			{
+				result.push_back(st[i]);
+			}
+		}
+		break;
+		case 2:
+		{
+			if (strcmp(cKey, st[i].StudentCode) == 0)
+			{
+				result.push_back(st[i]);
+			}
+		}
+		break;
+		case 3:
+		{
+			int k;
+			char ten[50];
+			for (int t = strlen(st[i].FullName) - 1; t >= 0; t--)
+			{
+				if (st[i].FullName[t] == 32 && st[i].FullName[t + 1] != 32)
+				{
+					k = t;
+					break;
+				}
+			}
+			strncpy(ten, st[i].FullName + k + 1, strlen(st[i].FullName) - k);
+			if (strcmp(cKey, ten) == 0)
+			{
+				result.push_back(st[i]);
+			}
+			if (strcmp(cKey, st[i].FullName) == 0)
+			{
+				result.push_back(st[i]);
+			}
+		}
+		break;
+		case 4:
+		{
+			if (strcmp(cKey, st[i].dayStr) == 0 || strcmp(cKey, st[i].monthStr) == 0 || strcmp(cKey, st[i].yearStr) == 0)
+				result.push_back(st[i]);
+			else if (strcmp(cKey, st[i].DateOfBirth) == 0)
+			{
+				result.push_back(st[i]);
+			}
+		}
+		break;
+		case 5:
+		{
+			float mKey = atof(cKey);
+			if (mKey == st[i].AverageScore)
+			{
+				result.push_back(st[i]);
+			}
+		}
+		break;
+		}
+	}
+	if (result.empty())
+	{
+		gotoxy(90, 15);
+		textcolor(12);
+		printf("--------Khong tim thay ket qua %s!!!-------", cKey);
+		gotoxy(90, 16);
+		textcolor(28);
+		printf("--------Moi ban nhap lai tim kiem: ---------");
+		textcolor(3);
+	}
+	else
+	{
+		gotoxy(90, 5);
+		textcolor(2);
+		printf("Ket qua tim kiem %s: ", cKey);
+		textcolor(3);
+		PrintListStudent(result);
+	}
+}
+int Binary_search(vector<Student> st, int L, int R, char cKey[50], int Opt)
+{
+	if (L > R)
+		return -1;
+	else
+	{
+		char tKey[50];
+		int key = (L + R) / 2;
+		switch (Opt)
+		{
+		case 1:
+		{
+			_strupr(cKey);
+			if (strcmp(cKey, st[key].ClassCode) == 0)
+				return key;
+			else if (strcmp(cKey, st[key].ClassCode) > 0)
+				return Binary_search(st, key + 1, R, cKey, Opt);
+			else if (strcmp(cKey, st[key].ClassCode) < 0)
+				return Binary_search(st, L, key - 1, cKey, Opt);
+		}
+		break;
+		case 2:
+		{
+			if (strcmp(cKey, st[key].StudentCode) == 0)
+				return key;
+			else if (strcmp(cKey, st[key].StudentCode) > 0)
+				return Binary_search(st, key + 1, R, cKey, Opt);
+			else if (strcmp(cKey, st[key].StudentCode) < 0)
+				return Binary_search(st, L, key - 1, cKey, Opt);
+		}
+		break;
+		case 3:
+		{
+			HandleRegularString(cKey);
+			if (strstr(cKey, " ") == NULL)
+			{
+				int k;
+				char ten[50];
+				for (int t = strlen(st[key].FullName) - 1; t >= 0; t--)
+				{
+					if (st[key].FullName[t] == 32 && st[key].FullName[t + 1] != 32)
+					{
+						k = t;
+						break;
+					}
+				}
+				strncpy(ten, st[key].FullName + k + 1, strlen(st[key].FullName) - k);
+
+				if (strcmp(cKey, ten) == 0)
+					return key;
+				else if (strcmp(cKey, ten) > 0)
+					return Binary_search(st, key + 1, R, cKey, Opt);
+				else if (strcmp(cKey, ten) < 0)
+					return Binary_search(st, L, key - 1, cKey, Opt);
+			}
+			else
+			{
+
+				HandleRegularString(cKey);
+				char cKey1[50];
+				strcpy(tKey, NameHandling(st[key].FullName));
+				strcpy(cKey1, NameHandling(cKey));
+				if (strcmp(cKey1, tKey) == 0)
+					return key;
+				else if (strcmp(cKey1, tKey) > 0)
+					return Binary_search(st, key + 1, R, cKey, Opt);
+				else if (strcmp(cKey1, tKey) < 0)
+					return Binary_search(st, L, key - 1, cKey, Opt);
+			}
+		}
+		case 4:
+		{
+			if (strlen(cKey) < 5)
+			{
+				if (strcmp(cKey, st[key].yearStr) == 0)
+					return key;
+				else if (strcmp(cKey, st[key].yearStr) > 0)
+					return Binary_search(st, key + 1, R, cKey, Opt);
+				else if (strcmp(cKey, st[key].yearStr) < 0)
+					return Binary_search(st, L, key - 1, cKey, Opt);
+			}
+			else
+			{
+
+				char cKey1[50];
+				strcpy(tKey, DateHandling(st[key].DateOfBirth));
+				strcpy(cKey1, DateHandling(cKey));
+				if (strcmp(cKey1, tKey) == 0)
+					return key;
+				else if (strcmp(cKey1, tKey) > 0)
+					return Binary_search(st, key + 1, R, cKey, Opt);
+				else if (strcmp(cKey1, tKey) < 0)
+					return Binary_search(st, L, key - 1, cKey, Opt);
+			}
+		}
+		break;
+		case 5:
+		{
+			float mKey = atof(cKey);
+			if (mKey == st[key].AverageScore)
+				return key;
+			else if (mKey < st[key].AverageScore)
+				return Binary_search(st, key + 1, R, cKey, Opt);
+			else if (mKey > st[key].AverageScore)
+				return Binary_search(st, L, key - 1, cKey, Opt);
+		}
+		break;
+		}
+	}
+}
+
 int main() {
 	int Opt = 1; //thứ tự menu
 	int optSort = 1; //thứ tự lựa chọn option sort
@@ -795,7 +1003,7 @@ menu_child:
 	} 
 	goto sort_function;
 	case 4://tìm kiếm
-	again4: {
+	search_function: {
 		do
 		{
 			DrawBoard(30, 3, 22);
@@ -843,6 +1051,275 @@ menu_child:
 				goto main_menu;
 			}
 		} while (!(ch == 13 || ch == 27 || ch == 77));
+
+		switch (optSearch)
+		{
+		case 1:
+		again5:
+		{
+			char ch;
+			int iOpt = 1;
+			do
+			{
+				DrawBoard(54, 6, 20);
+				gotoxy(50, 3);
+				printf("**************************************************");
+				gotoxy(65, 2);
+				printf("--MENU SINH VIEN--\n\n\n\n\n");
+				system("color B3");
+				for (int t = 1; t <= 6; t++)
+				{
+					if (t == iOpt)
+					{
+						gotoxy(56, 8 + 2 * t);
+						textcolor(26);
+						printf("%s", menu_search_option[t - 1]);
+						printf("\n");
+						textcolor(3);
+					}
+					else
+					{
+						gotoxy(56, 8 + 2 * t);
+						printf("%s\n", menu_search_option[t - 1]);
+					}
+				}
+				do
+				{
+					ch = _getch();
+					if (ch == 224)
+						ch = _getch();
+				} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
+				if (ch == 80)
+				{
+					iOpt++;
+					if (iOpt > 6)
+						iOpt = 1;
+				}
+				if (ch == 72)
+				{
+					iOpt--;
+					if (iOpt < 1)
+						iOpt = 6;
+				}
+				if (ch == 75 || ch == 27)
+					goto search_function;
+			} while (!(ch == 13 || ch == 27 || ch == 77));
+			switch (iOpt)
+			{
+			case 1:
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			{
+				LinearSearch(vector_student, iOpt);
+				_getch();
+			}
+			break;
+			case 6:
+				goto search_function;
+				break;
+			default:
+				break;
+			}
+			system("cls");
+			DrawBoard(30, 3, 22);
+			for (int t = 0; t < 3; t++)
+			{
+				gotoxy(32, 10 + 2 * t);
+				printf("%s", menu_search[t]);
+				textcolor(3);
+			}
+			DrawBoard(0, 6, 27);
+			for (int h = 0; h < 6; h++)
+			{
+				gotoxy(2, 10 + 2 * h);
+				printf("%s", menu[h]);
+				textcolor(3);
+			}
+			goto again5;
+		}
+		case 2:
+		again6:
+		{
+			char ch;
+			int tOpt = 1;
+			do
+			{
+				DrawBoard(54, 6, 20);
+				gotoxy(50, 3);
+				printf("**************************************************");
+				gotoxy(65, 2);
+				printf("--MENU SINH VIEN--\n\n\n\n\n");
+				system("color B3");
+				for (int t = 1; t <= 6; t++)
+				{
+					if (t == tOpt)
+					{
+						gotoxy(56, 8 + 2 * t);
+						textcolor(26);
+						printf("%s", menu_search_option[t - 1]);
+						printf("\n");
+						textcolor(3);
+					}
+					else
+					{
+						gotoxy(56, 8 + 2 * t);
+						printf("%s\n", menu_search_option[t - 1]);
+					}
+				}
+				do
+				{
+					ch = _getch();
+					if (ch == 224)
+						ch = _getch();
+				} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
+				if (ch == 80)
+				{
+					tOpt++;
+					if (tOpt > 6)
+						tOpt = 1;
+				}
+				if (ch == 72)
+				{
+					tOpt--;
+					if (tOpt < 1)
+						tOpt = 6;
+				}
+				if (ch == 75 || ch == 27)
+					goto search_function;
+			} while (!(ch == 13 || ch == 27 || ch == 77));
+			switch (tOpt)
+			{
+			case 1:
+			{
+				QuickSort(vector_student, 0, vector_student.size() - 1, 5);
+				vector<Student> result, svp(vector_student);
+				char cKey[50];
+				DrawBoard(77, 1, 30);
+				gotoxy(80, 10);
+				textcolor(12);
+				fflush(stdin);
+				gets_s(cKey);
+				textcolor(3);
+				int i;
+				while (Binary_search(svp, 0, svp.size(), cKey, 1) >= 0)
+				{
+					i = Binary_search(svp, 0, svp.size(), cKey, 1);
+					result.push_back(svp[i]);
+					svp.erase(svp.begin() + i);
+				}
+				if (result.empty())
+				{
+					gotoxy(90, 15);
+					textcolor(12);
+					printf("--------Khong tim thay ket qua %s!!!------\n", cKey);
+					gotoxy(90, 16);
+					textcolor(28);
+					printf("-------Moi ban nhap lai tim kiem: --------");
+					textcolor(3);
+					_getch();
+				}
+				else
+				{
+					gotoxy(90, 5);
+					textcolor(2);
+					printf("Ket qua tim kiem %s: ", cKey);
+					textcolor(3);
+					PrintListStudent(result);
+					_getch();
+				}
+				system("cls");
+				DrawBoard(30, 3, 22);
+				for (int t = 0; t < 3; t++)
+				{
+					gotoxy(32, 10 + 2 * t);
+					printf("%s", menu_search[t]);
+					textcolor(3);
+				}
+				DrawBoard(0, 6, 27);
+				for (int h = 0; h < 6; h++)
+				{
+					gotoxy(2, 10 + 2 * h);
+					printf("%s", menu[h]);
+					textcolor(3);
+				}
+				goto again6;
+			}
+			break;
+			case 2:
+			case 3:
+			case 4:
+			case 5:
+			{
+				QuickSort(vector_student, 0, vector_student.size() - 1, tOpt - 1);
+				vector<Student> result, svp(vector_student);
+				char cKey[50];
+				DrawBoard(77, 1, 30);
+				gotoxy(80, 10);
+				textcolor(12);
+				fflush(stdin);
+				gets_s(cKey);
+				textcolor(3);
+				int i;
+				while (Binary_search(svp, 0, svp.size(), cKey, tOpt) >= 0)
+				{
+					i = Binary_search(svp, 0, svp.size(), cKey, tOpt);
+					result.push_back(svp[i]);
+					svp.erase(svp.begin() + i);
+				}
+				if (result.empty())
+				{
+					gotoxy(90, 15);
+					textcolor(12);
+					printf("--------Khong tim thay ket qua %s!!!------", cKey);
+					gotoxy(90, 16);
+					textcolor(28);
+					printf("-------Moi ban nhap lai tim kiem: --------");
+					textcolor(3);
+					_getch();
+				}
+				else
+				{
+					gotoxy(90, 5);
+					textcolor(2);
+					printf("Ket qua tim kiem %s: ", cKey);
+					textcolor(3);
+					PrintListStudent(result);
+					_getch();
+					system("cls");
+				}
+			}
+			break;
+			case 6:
+				goto search_function;
+				break;
+			default:
+				break;
+			}
+			system("cls");
+			DrawBoard(30, 3, 22);
+			for (int t = 0; t < 3; t++)
+			{
+				gotoxy(32, 10 + 2 * t);
+				printf("%s", menu_search[t]);
+				textcolor(3);
+			}
+			DrawBoard(0, 6, 27);
+			for (int h = 0; h < 6; h++)
+			{
+				gotoxy(2, 10 + 2 * h);
+				printf("%s", menu[h]);
+				textcolor(3);
+			}
+			goto again6;
+		}
+		case 3:
+			system("cls");
+			goto main_menu;
+			break;
+		}
+
 	}break;
 	case 5://thống kê
 		do {
