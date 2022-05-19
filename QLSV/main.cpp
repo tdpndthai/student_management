@@ -316,7 +316,7 @@ void WriteFileText (vector<Student> st)
 	fprintf(f1, "          -----------DANH SACH SINH VIEN-------------\n");
 	fprintf(f1, "---------------------------------------------------------------------------------------------\n");
 
-	fprintf(f1, "| stt  |     MALOP  |        MAst  |           HOTEN         |     NGAYSINH    |   DIEMTB   |\n");
+	fprintf(f1, "| stt  |     MALOP  |        MASV  |           HOTEN         |     NGAYSINH    |   DIEMTB   |\n");
 	for (int i = 0; i < st.size(); i++)
 	{
 		HandleRegularString(st[i].FullName);
@@ -792,6 +792,74 @@ int Binary_search(vector<Student> st, int L, int R, char cKey[50], int Opt)
 	}
 }
 
+
+//--------------------thong ke sinh vien-----------------------------
+void Statistic(vector<Student> st, char x[])
+{
+again20:
+	DrawBoard(35, 1, 25);
+	gotoxy(37, 10);
+	printf(" Ma Lop  ||  ");
+	gotoxy(50, 10);
+	printf("\t");
+	textcolor(12);
+	fflush(stdin);
+	gotoxy(51, 10);
+	gets_s(x, 10);
+	textcolor(3);
+	int chon;
+	float tong, j, k, l, m, n;
+	tong = j = l = m = n = k = 0;
+	for (int i = 0; i < st.size(); i++)
+	{
+		if (_stricmp(st[i].ClassCode, x) == 0)
+		{
+			tong++;
+			if (st[i].AverageScore >= 9)
+				j++;
+			else if ((st[i].AverageScore < 9) && (st[i].AverageScore >= 8))
+				k++;
+			else if ((st[i].AverageScore < 8) && (st[i].AverageScore >= 7))
+				l++;
+			else if ((st[i].AverageScore < 7) && (st[i].AverageScore >= 5))
+				m++;
+			else
+				n++;
+		}
+	}
+	if (tong > 0)
+	if (tong > 0)
+	{
+		textcolor(29);
+		DrawBoard(77, 4, 72);
+		textcolor(3);
+		gotoxy(78, 10);
+		printf("\t\t    So hoc sinh trong lop %s la:  %.0f hocsinh\t\t    ", _strupr(x), tong);
+		gotoxy(78, 12);
+		printf("%10s|%11s|%11s|%11s|%11s|%11s\n", " ", "Xuat Sac", "Gioi", "Kha", "Trung Binh", "Yeu");
+		gotoxy(78, 13);
+		gotoxy(78, 14);
+		printf("%10s|%11.2f|%11.2f|%11.2f|%11.2f|%11.2f\n", " ", j, k, l, m, n);
+		textcolor(3);
+		gotoxy(78, 16);
+		printf("%10s|%11.2f|%11.2f|%11.2f|%11.2f|%11.2f\n", "Ti Le(%)", (j / tong) * 100, (k / tong) * 100, (l / tong) * 100, (m / tong) * 100, (n / tong) * 100);
+		textcolor(29);
+		gotoxy(78, 17);
+	}
+	else
+	{
+		textcolor(29);
+		gotoxy(78, 10);
+		printf("Lop %s khong co sinh vien.", x);
+		_getch();
+		textcolor(3);
+		goto again20;
+	}
+	_getch();
+	textcolor(3);
+	system("cls");
+}
+
 int main() {
 	int Opt = 1; //thứ tự menu
 	int optSort = 1; //thứ tự lựa chọn option sort
@@ -803,6 +871,7 @@ int main() {
 	Student std3;
 	vector<Student> vector_student;
 	ReadFile(vector_student);
+	char x[10];
 main_menu:
 	textcolor(2);
 	gotoxy(65, 25);
@@ -1323,7 +1392,8 @@ menu_child:
 	}break;
 	case 5://thống kê
 		do {
-
+			Statistic(vector_student, x);
+			goto main_menu;
 		} while (!(ch == 13 || ch == 27));
 		break;
 	case 6://thoát
