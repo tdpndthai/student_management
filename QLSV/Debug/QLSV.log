@@ -1,24 +1,23 @@
 ﻿  main.cpp
 c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(97): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(140): warning C4102: 'again': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(220): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(294): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(298): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(303): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(320): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(334): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(337): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(382): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(453): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(600): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(656): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(592): warning C4101: 'mKey': unreferenced local variable
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(782): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(813): warning C4018: '<': signed/unsigned mismatch
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(810): warning C4101: 'chon': unreferenced local variable
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(912): warning C4102: 'menu_child': unreferenced label
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(275): warning C4172: returning address of local variable or temporary: temp
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(252): warning C4172: returning address of local variable or temporary: ten1
-c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(793): warning C4715: 'Binary_search': not all control paths return a value
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(104): warning C4838: conversion from 'int' to 'SHORT' requires a narrowing conversion
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(227): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(301): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(305): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(310): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(327): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(341): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(344): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(389): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(460): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(607): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(663): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(599): warning C4101: 'mKey': unreferenced local variable
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(791): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(822): warning C4018: '<': signed/unsigned mismatch
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(819): warning C4101: 'chon': unreferenced local variable
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(920): warning C4102: 'menu_child': unreferenced label
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(259): warning C4172: returning address of local variable or temporary: ten1
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(282): warning C4172: returning address of local variable or temporary: temp
+c:\users\nguye\source\repos\qlsv\qlsv\main.cpp(802): warning C4715: 'Binary_search': not all control paths return a value
   QLSV.vcxproj -> C:\Users\nguye\source\repos\QLSV\Debug\QLSV.exe

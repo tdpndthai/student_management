@@ -14,6 +14,13 @@ using namespace std;
 const char FileOutTxt[] = "list_student.txt";
 const char FileOutDat[] = "student.dat";
 
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+#define KEY_ENTER 13
+#define KEY_ESC 27
+
 
 struct Student {
 	char ClassCode[10]; //mã lớp học
@@ -138,7 +145,7 @@ void AddStudent(Student &st) {
 
 	textcolor(12); fflush(stdin); gotoxy(90, 10); gets_s(st.ClassCode);
 again:
-	gotoxy(90, 12); printf("\t\t\t"); fflush(stdin); gotoxy(90, 12); fflush(stdin); gets_s(st.StudentCode);
+	gotoxy(90, 12); printf("\t\t\t"); fflush(stdin); gotoxy(90, 12); fflush(stdin); gets_s(st.StudentCode); if (strlen(st.StudentCode) != 8) goto again; fflush(stdout); //msv = 8
 	gotoxy(90, 14); fflush(stdin);	gets_s(st.FullName);
 
 again1:
@@ -147,9 +154,9 @@ again1:
 	gotoxy(90, 16);
 	fflush(stdin);
 	gets_s(st.DateOfBirth);
-	//---------kiem tra ngay sinh-------------------
+	//---------kiem tra ngay sinh format dd/mm/yyyy-------------------
 	for (int i = strlen(st.DateOfBirth) - 1; i >= 0; i--) {
-		if (st.DateOfBirth[i] == 47) {
+		if (st.DateOfBirth[i] == 47) { //gạch / cuối cùng phải nằm vị trí số 5
 			k = i;
 			break;
 		}
@@ -177,7 +184,7 @@ again12:
 		textcolor(3);
 		printf("Diem trung binh khong hop le %.f", st.AverageScore);
 		ch = _getch();
-		if (ch == 13 || ch == 27) {
+		if (ch == KEY_ENTER || ch == KEY_ESC) {
 			fflush(stdout);
 		}
 
@@ -307,7 +314,7 @@ void HandleRegularString(char a[])
 }
 
 //-------------ghi ra file text ---------
-void WriteFileText (vector<Student> st)
+void WriteFileText(vector<Student> st)
 {
 	FILE *f1;
 	int i = 1;
@@ -316,7 +323,7 @@ void WriteFileText (vector<Student> st)
 	fprintf(f1, "          -----------DANH SACH SINH VIEN-------------\n");
 	fprintf(f1, "---------------------------------------------------------------------------------------------\n");
 
-	fprintf(f1, "| stt  |     MALOP  |        MASV  |           HOTEN         |     NGAYSINH    |   DIEMTB   |\n");
+	fprintf(f1, "| STT  |     MALOP  |        MASV  |           HOTEN         |     NGAYSINH    |   DIEMTB   |\n");
 	for (int i = 0; i < st.size(); i++)
 	{
 		HandleRegularString(st[i].FullName);
@@ -681,6 +688,8 @@ void LinearSearch(vector<Student> st, int Opt)
 		PrintListStudent(result);
 	}
 }
+
+//-----------tim kiem nhi phan----------------
 int Binary_search(vector<Student> st, int L, int R, char cKey[50], int Opt)
 {
 	if (L > R)
@@ -828,7 +837,6 @@ again20:
 		}
 	}
 	if (tong > 0)
-	if (tong > 0)
 	{
 		textcolor(29);
 		DrawBoard(77, 4, 72);
@@ -898,17 +906,17 @@ main_menu:
 		do {
 			ch = _getch();
 			if (ch == 224) ch = _getch();
-		} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-		if (ch == 80) {
+		} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+		if (ch == KEY_DOWN) {
 			Opt++;
 			if (Opt > 6) Opt = 1;
 		}
-		if (ch == 72)
+		if (ch == KEY_UP)
 		{
 			Opt--;
 			if (Opt < 1) Opt = 6;
 		}
-	} while (!(ch == 13 || ch == 77));
+	} while (!(ch == KEY_ENTER || ch == KEY_RIGHT));
 menu_child:
 	switch (Opt) {
 	case 1: {// thêm hồ sơ
@@ -920,7 +928,7 @@ menu_child:
 			WriteFile(std1);
 			system("cls");
 			goto main_menu;
-		} while (!(ch == 13 || ch == 27));
+		} while (!(ch == KEY_ENTER || ch == KEY_ESC));
 	}break;
 	case 2: {// in danh sách st
 		do
@@ -929,16 +937,15 @@ menu_child:
 			do {
 				ch = _getch();
 				if (ch == 224) ch = _getch();
-			} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-			if (ch == 13 || ch == 27) { 
-				system("cls"); 
-				goto main_menu; 
+			} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+			if (ch == KEY_ENTER || ch == KEY_ESC) {
+				system("cls");
+				goto main_menu;
 			}
-		} while (!(ch == 13 || ch == 27));
+		} while (!(ch == KEY_ENTER || ch == KEY_ESC));
 	}break;
 	case 3://sắp xếp
-	sort_function: 
-	{
+	sort_function:
 		do {
 			gotoxy(65, 2);
 			printf("--MENU SINH VIEN--\n\n\n\n\n");
@@ -964,112 +971,111 @@ menu_child:
 				ch = _getch();
 				if (ch == 224)
 					ch = _getch();
-			} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-			if (ch == 80)
+			} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+			if (ch == KEY_DOWN)
 			{
 				optSort++;
 				if (optSort > 5)
 					optSort = 1;
 			}
-			if (ch == 72)
+			if (ch == KEY_UP)
 			{
 				optSort--;
 				if (optSort < 1)
 					optSort = 5;
 			}
-			if (ch == 75 || ch == 27)
+			if (ch == KEY_LEFT || ch == KEY_ESC)
 			{
-				//system("cls");
+				system("cls");
 				goto main_menu;
 			}
-		} while (!(ch == 13 || ch == 27 || ch == 77));
+		} while (!(ch == KEY_ENTER || ch == KEY_ESC || ch == KEY_RIGHT));
 
 		switch (optSort) //lựa chọn sắp xếp nào,chọn,chèn,nhanh,noi bot
 		{
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			select_sort_option:
-			{
-				char ch;
-				do {
-					gotoxy(65, 2);
-					printf("--MENU SINH VIEN--\n\n\n\n\n");
-					system("color B3");
-					for (int t = 1; t <= 5; t++)
-					{
-						if (t == optSortSelection)
-						{
-							gotoxy(55, 8 + 2 * t);
-							textcolor(26);
-							printf("%s", menu_sort_option[t - 1]);
-							printf("\n");
-							textcolor(3);
-						}
-						else
-						{
-							gotoxy(55, 8 + 2 * t);
-							printf("%s\n", menu_sort_option[t - 1]);
-						}
-					}
-					do
-					{
-						ch = _getch();
-						if (ch == 224)
-							ch = _getch();
-					} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-					if (ch == 80)
-					{
-						optSortSelection++;
-						if (optSortSelection > 5)
-							optSortSelection = 1;
-					}
-					if (ch == 72)
-					{
-						optSortSelection--;
-						if (optSortSelection < 1)
-							optSortSelection = 5;
-					}
-					if (ch == 75 || ch == 27)
-					{
-						goto sort_function;
-					}
-				} while (!(ch == 13 || ch == 27));
-
-				switch (optSortSelection)
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		select_sort_option:
+		{
+			char ch;
+			do {
+				gotoxy(65, 2);
+				printf("--MENU SINH VIEN--\n\n\n\n\n");
+				system("color B3");
+				for (int t = 1; t <= 5; t++)
 				{
-					case 1:
-						SelectionSort(vector_student, optSortSelection);
-						break;
-					case 2:
-						InsertionSort(vector_student, optSortSelection);
-						break;
-					case 3:
-						BubbleSort(vector_student, optSortSelection);
-						break;
-					case 4:
+					if (t == optSortSelection)
 					{
-						vector<Student> stp(vector_student);
-						QuickSort(stp, 0, stp.size() - 1, optSortSelection);
-						PrintListStudent(stp);
-						_getch();
+						gotoxy(55, 8 + 2 * t);
+						textcolor(26);
+						printf("%s", menu_sort_option[t - 1]);
+						printf("\n");
+						textcolor(3);
 					}
-					break;
-					case 5:
-						//system("cls");
-						goto sort_function;
-						break;
+					else
+					{
+						gotoxy(55, 8 + 2 * t);
+						printf("%s\n", menu_sort_option[t - 1]);
+					}
 				}
-				goto select_sort_option;
+				do
+				{
+					ch = _getch();
+					if (ch == 224)
+						ch = _getch();
+				} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+				if (ch == KEY_DOWN)
+				{
+					optSortSelection++;
+					if (optSortSelection > 5)
+						optSortSelection = 1;
+				}
+				if (ch == KEY_UP)
+				{
+					optSortSelection--;
+					if (optSortSelection < 1)
+						optSortSelection = 5;
+				}
+				if (ch == KEY_LEFT || ch == KEY_ESC)
+				{
+					goto sort_function;
+				}
+			} while (!(ch == KEY_ENTER || ch == KEY_ESC));
+
+			switch (optSortSelection)
+			{
+			case 1:
+				SelectionSort(vector_student, optSortSelection);
+				break;
+			case 2:
+				InsertionSort(vector_student, optSortSelection);
+				break;
+			case 3:
+				BubbleSort(vector_student, optSortSelection);
+				break;
+			case 4:
+			{
+				vector<Student> stp(vector_student);
+				QuickSort(stp, 0, stp.size() - 1, optSortSelection);
+				PrintListStudent(stp);
+				_getch();
+			}
+			break;
+			case 5:
+				//system("cls");
+				goto sort_function;
 				break;
 			}
-			case 5:
-				system("cls");
-				goto main_menu;
-				break;
+			goto select_sort_option;
+			break;
 		}
-	} 
+		case 5:
+			system("cls");
+			goto main_menu;
+			break;
+		}
 	goto sort_function;
 	case 4://tìm kiếm
 	search_function: {
@@ -1101,25 +1107,25 @@ menu_child:
 				ch = _getch();
 				if (ch == 224)
 					ch = _getch();
-			} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-			if (ch == 80)
+			} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+			if (ch == KEY_DOWN)
 			{
 				optSearch++;
 				if (optSearch > 3)
 					optSearch = 1;
 			}
-			if (ch == 72)
+			if (ch == KEY_UP)
 			{
 				optSearch--;
 				if (optSearch < 1)
 					optSearch = 3;
 			}
-			if (ch == 75 || ch == 27)
+			if (ch == KEY_LEFT || ch == KEY_ESC)
 			{
 				system("cls");
 				goto main_menu;
 			}
-		} while (!(ch == 13 || ch == 27 || ch == 77));
+		} while (!(ch == KEY_ENTER || ch == KEY_ESC || ch == KEY_RIGHT));
 
 		switch (optSearch)
 		{
@@ -1157,22 +1163,22 @@ menu_child:
 					ch = _getch();
 					if (ch == 224)
 						ch = _getch();
-				} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-				if (ch == 80)
+				} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+				if (ch == KEY_DOWN)
 				{
 					iOpt++;
 					if (iOpt > 6)
 						iOpt = 1;
 				}
-				if (ch == 72)
+				if (ch == KEY_UP)
 				{
 					iOpt--;
 					if (iOpt < 1)
 						iOpt = 6;
 				}
-				if (ch == 75 || ch == 27)
+				if (ch == KEY_LEFT || ch == KEY_ESC)
 					goto search_function;
-			} while (!(ch == 13 || ch == 27 || ch == 77));
+			} while (!(ch == KEY_ENTER || ch == KEY_ESC || ch == KEY_RIGHT));
 			switch (iOpt)
 			{
 			case 1:
@@ -1199,7 +1205,7 @@ menu_child:
 				printf("%s", menu_search[t]);
 				textcolor(3);
 			}
-			DrawBoard(0, 6, 27);
+			//DrawBoard(0, 6, 27);
 			for (int h = 0; h < 6; h++)
 			{
 				gotoxy(2, 10 + 2 * h);
@@ -1242,22 +1248,22 @@ menu_child:
 					ch = _getch();
 					if (ch == 224)
 						ch = _getch();
-				} while (!(ch == 224 || ch == 13 || ch == 77 || ch == 80 || ch == 72 || ch == 75 || ch == 27));
-				if (ch == 80)
+				} while (!(ch == 224 || ch == KEY_ENTER || ch == KEY_RIGHT || ch == KEY_DOWN || ch == KEY_UP || ch == KEY_LEFT || ch == KEY_ESC));
+				if (ch == KEY_DOWN)
 				{
 					tOpt++;
 					if (tOpt > 6)
 						tOpt = 1;
 				}
-				if (ch == 72)
+				if (ch == KEY_UP)
 				{
 					tOpt--;
 					if (tOpt < 1)
 						tOpt = 6;
 				}
-				if (ch == 75 || ch == 27)
+				if (ch == KEY_LEFT || ch == KEY_ESC)
 					goto search_function;
-			} while (!(ch == 13 || ch == 27 || ch == 77));
+			} while (!(ch == KEY_ENTER || ch == KEY_ESC || ch == KEY_RIGHT));
 			switch (tOpt)
 			{
 			case 1:
@@ -1306,7 +1312,7 @@ menu_child:
 					printf("%s", menu_search[t]);
 					textcolor(3);
 				}
-				DrawBoard(0, 6, 27);
+				//DrawBoard(0, 6, 27);
 				for (int h = 0; h < 6; h++)
 				{
 					gotoxy(2, 10 + 2 * h);
@@ -1374,7 +1380,7 @@ menu_child:
 				printf("%s", menu_search[t]);
 				textcolor(3);
 			}
-			DrawBoard(0, 6, 27);
+			//DrawBoard(0, 6, 27);
 			for (int h = 0; h < 6; h++)
 			{
 				gotoxy(2, 10 + 2 * h);
@@ -1394,12 +1400,11 @@ menu_child:
 		do {
 			Statistic(vector_student, x);
 			goto main_menu;
-		} while (!(ch == 13 || ch == 27));
+		} while (!(ch == KEY_ENTER || ch == KEY_ESC));
 		break;
 	case 6://thoát
 		system("cls");
-		cout << "\n\n"
-			<< endl;
+		cout << "\n\n" << endl;
 		gotoxy(45, 2);
 		cout << "HOC, HOC NUA, HOC MAI!!!!!" << endl;
 		textcolor(12);
